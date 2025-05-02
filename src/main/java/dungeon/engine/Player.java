@@ -35,11 +35,4 @@ public class Player {
         }
     }
 
-    public static void main(String[] args){
-        Player tom = new Player();
-        System.out.println(tom.getHealth());
-        System.out.println(tom.getScore());
-        System.out.println(tom.getX());
-        System.out.println(tom.getY());
-    }
 }
