@@ -17,6 +17,7 @@ public class Player {
         if (h + health >= MAX_PLAYER_HEALTH) {this.health = MAX_PLAYER_HEALTH;}
         else if (h + health < 0) {
             System.out.print("player dies");
+            // TODO: Implement death
             this.health = 0;
         }
     }

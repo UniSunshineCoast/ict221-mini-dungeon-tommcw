@@ -56,5 +56,9 @@ public class GameEngine {
     public static void main(String[] args) {
         GameEngine engine = new GameEngine(10);
         System.out.printf("The size of map is %d * %d\n", engine.getSize(), engine.getSize());
+        //for (int i = 0; i < engine.getSize(); i++) {
+        //    System.out.print(engine.getMap()[i][1]);
+        //}
+        System.out.print(engine.getMap()[0][0].getChildren());
     }
 }

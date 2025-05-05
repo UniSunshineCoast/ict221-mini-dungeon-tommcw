@@ -8,8 +8,7 @@ public abstract class MazeItem {
 
     public void setActive(){this.active = true;}
     public void setNotActive(){this.active = false;}
+    public boolean checkActive(){return this.active;}
     public void setHpModifier(int m){this.hpModifier = m;}
     public void setScoreModifier(int s){this.scoreModifier = s;}
-
-    //public void updatePlayer(Player p){;}
 }
