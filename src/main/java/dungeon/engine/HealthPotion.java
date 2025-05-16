@@ -11,11 +11,19 @@ public class HealthPotion extends MazeItem{
         this.setActive();
         this.setHpModifier(HP_MODIFIER);
         this.setScoreModifier(0);
+        this.setMapSymbol("H");
     }
 
+    @Override
     public void activate(Player p){
-        if (this.checkActive()) // The player shall not get the health twice
+        if (this.checkActive()){ // The player shall not get the health twice
             p.setHealth(HP_MODIFIER);
+            System.out.println("You have found a potion. You use it immediately");
+        }
+        else
+            System.out.println("You hear the sound of scratching in the distance.");
         this.setNotActive();
+        this.setMapSymbol(" ");
+        p.setOverlapping(this.getMapSymbol());
         }
 }

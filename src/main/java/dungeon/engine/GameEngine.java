@@ -1,41 +1,54 @@
 package dungeon.engine;
 
 import javafx.scene.text.Text;
+import java.util.Random;
+import java.util.Scanner;
 
 public class GameEngine {
-
-    /**
-     * An example board to store the current game state.
-     *
-     * Note: depending on your game, you might want to change this from 'int' to String or something?
-     */
+    private int difficulty = 3;
+    private int currentLevel = 1;
     private Cell[][] map;
 
-    /**
-     * Creates a square game board.
-     *
-     * @param size the width and height.
-     */
-    public GameEngine(int size) {
+    public GameEngine(int mapDimensions) {
+        clearMap(mapDimensions);
+    }
+
+    public void clearMap(int size){
         map = new Cell[size][size];
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Cell cell = new Cell();
-                Text text = new Text(i + "," + j);
-                cell.getChildren().add(text);
+                cell.setMazeObject(new EmptyCell());
+                Text text = new Text( i+ "," + j);
                 map[i][j] = cell;
             }
         }
 
         map[0][0].setStyle("-fx-background-color: #7baaa4");
         map[size-1][size-1].setStyle("-fx-background-color: #7baaa4");
+
     }
 
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void raiseDifficulty(){
+        if (this.difficulty < 8){
+            // Do not allow the difficulty to go past 10
+            this.setDifficulty(this.difficulty + 2);
+        } else {this.setDifficulty(10);}
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public int getLevel(){return this.currentLevel;}
+    public void raiseLevel(){this.currentLevel++;}
     /**
      * The size of the current game.
-     *
-     * @return this is both the width and the height.
      */
     public int getSize() {
         return map.length;
@@ -51,14 +64,167 @@ public class GameEngine {
     }
 
     /**
+     * Print map to the console for text based game.
+     */
+    public void printMap() {
+        for (int j = 0; j < this.getSize(); j++) {
+            for (int i = 0; i < this.getSize(); i++) {
+                System.out.print(this.getMap()[i][j].getContents() + " ");
+            } // Added spacer for readability
+            System.out.print("\n");
+        }
+    }
+
+    /**
+     * Puts objects on the map
+     */
+    public void populateCell(MazeItem m){
+        int size = this.getSize();
+        Random rand = new Random();
+        int a = rand.nextInt(size);
+        int b = rand.nextInt(size);
+        for (int i = 0; i < 100; i++){
+            if (i > 95){
+                System.out.println("Error: Map size to small to populate.");
+                break;
+            }
+            if (this.getMap()[a][b].getContents() != " "){
+                a = rand.nextInt(size); // If the cell is occupied
+                b = rand.nextInt(size); // try to find another.
+                continue;
+            }
+            this.getMap()[a][b].setMazeObject(m);
+            this.getMap()[a][b].setContents(m.getMapSymbol());
+            break;
+        }
+    }
+
+    public void populateMap(int ex, int ey, Player p){
+        final int numberGold = 5;
+        final int numberHealthPotions = 2;
+        final int numberTraps = 5;
+        final int numberMeleeM = 3;
+        // Add the Entry
+        if (p.getVictorious()){
+            this.getMap()[p.getX()][p.getY()].setMazeObject(new Entry());
+            this.getMap()[ex][ey].setContents("E");
+            p.setNotVictorious();
+        }
+        else {
+            this.getMap()[ex][ey].setMazeObject(new Entry());
+            this.getMap()[ex][ey].setContents("E");
+
+        }
+        // Add the Ladder
+        this.populateCell(new Ladder());
+        // Add Gold, Potions, Traps and Mutants
+        for (int i = 0; i < numberGold; i++){
+            this.populateCell(new Gold());
+        }
+        for (int i = 0; i < numberHealthPotions; i++){
+            this.populateCell(new HealthPotion());
+        }
+        for (int i = 0; i < numberMeleeM; i++){
+            this.populateCell(new MeleeMutant());
+        }
+        for (int i = 0; i < numberTraps; i++){
+            this.populateCell(new Trap());
+        }
+        for (int i = 0; i < this.getDifficulty(); i++){
+            this.populateCell(new RangedMutant());
+        }
+        // Add the player
+        p.setOverlapping(this.getMap()[p.getX()][p.getY()].getContents());
+        this.getMap()[p.getX()][p.getY()].setContents("P");
+    }
+
+    public void processMovement(Player p){
+        // Store the overlapped symbol on the player for later.
+        p.setOverlapping(this.getMap()[p.getX()][p.getY()].getContents());
+        // Make sure the player can see where they are.
+        this.getMap()[p.getX()][p.getY()].setContents("P");
+        // Enforce the consequences of the move.
+        if (this.getMap()[p.getX()][p.getY()].getMazeObject() != null){
+            this.getMap()[p.getX()][p.getY()].getMazeObject().activate(p);
+        }
+    }
+    /**
      * Plays a text-based game
      */
     public static void main(String[] args) {
-        GameEngine engine = new GameEngine(10);
+        final int mapSize = 10;
+        GameEngine engine = new GameEngine(mapSize);
+        //System.out.println("Please enter difficulty: 0-10");
+        //Scanner input = new Scanner(System.in);
+        //engine.setDifficulty(input.nextInt());
         System.out.printf("The size of map is %d * %d\n", engine.getSize(), engine.getSize());
-        //for (int i = 0; i < engine.getSize(); i++) {
-        //    System.out.print(engine.getMap()[i][1]);
-        //}
-        System.out.print(engine.getMap()[0][0].getChildren());
+        Player thePlayer = new Player();
+        thePlayer.setY(mapSize - 1);
+        engine.populateMap(0, engine.getSize() - 1, thePlayer);
+        Scanner input = new Scanner(System.in);  // use the other scanner later
+        for (int steps = 100; steps > 0; steps--){
+            if (thePlayer.getHealth() == 0) break; // TODO: death
+            if (thePlayer.getVictorious()) {
+                engine.raiseLevel();
+                engine.raiseDifficulty();// if Level 1 is completed.
+                engine.clearMap(mapSize);
+                engine.populateMap(thePlayer.getX(), thePlayer.getY(), thePlayer);
+                thePlayer.setNotVictorious();
+            }
+
+            // Do not allow player to visit level 3.
+            if (engine.getLevel() > 2) break; // TODO: scoreboard
+
+            // Output player stats and map
+            System.out.printf("Player X,Y: %d,%d%n",thePlayer.getX(),thePlayer.getY());
+            System.out.printf("Player HP: %d",thePlayer.getHealth());
+            System.out.printf(" Score: %d",thePlayer.getScore());
+            System.out.printf(" Current Level: %d%n", engine.getLevel());
+            System.out.printf(" Current Difficulty: %d%n", engine.getDifficulty());
+            engine.printMap();
+            System.out.printf("Please enter the direction to go (WASD)");
+
+            //Handle user input
+            switch (input.next()){
+                case "w","W":
+                    // Check the move is allowed
+                    if (thePlayer.getY() < 1) {System.out.println("You hit a wall");}
+                    else { // Set any overlapped item back
+                        engine.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                        // Move the player
+                        thePlayer.updateCoords('y', -1);
+                        engine.processMovement(thePlayer);
+                    }
+                    break;
+                case "a","A":
+                    if (thePlayer.getX() < 1) {System.out.println("You hit a wall");}
+                    else {
+                        engine.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                        thePlayer.updateCoords('x', -1);
+                        engine.processMovement(thePlayer);
+                    }
+                    break;
+                case "s","S":
+                    if (thePlayer.getY() > mapSize - 2) {System.out.println("You hit a wall");}
+                    else {
+                        engine.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                        thePlayer.updateCoords('y', 1);
+                        engine.processMovement(thePlayer);
+                    }
+                    break;
+                case "d","D":
+                    if (thePlayer.getX() > mapSize - 2) {System.out.println("You hit a wall");}
+                    else {
+                        engine.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                        thePlayer.updateCoords('x', 1);
+                        engine.processMovement(thePlayer);
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid move: try WASD");
+            }
+        }
+        System.out.println("Your journey is over.");
+        System.out.printf("Your Score was: %d", thePlayer.getScore());
     }
 }

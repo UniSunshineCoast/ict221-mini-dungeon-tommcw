@@ -10,9 +10,13 @@ public class Trap extends MazeItem{
         this.setActive();
         this.setHpModifier(HP_MODIFIER);
         this.setScoreModifier(0);
+        this.setMapSymbol("T");
     }
 
+    @Override
     public void activate(Player p){
+        System.out.println("You stood on a trap. OUCH!");
         p.setHealth(HP_MODIFIER);
+        p.setOverlapping(this.getMapSymbol());
     }
 }

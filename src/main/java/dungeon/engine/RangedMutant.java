@@ -15,13 +15,21 @@ public class RangedMutant extends MazeItem{
         this.setActive();
         this.setHpModifier(HP_MODIFIER_RANGED); // Only does damage ranged
         this.setScoreModifier(SCORE_MODIFIER);
+        this.setMapSymbol("R");
     }
 
+    @Override
     public void activate(Player p){ // Melee encounter
         if (this.checkActive()) { // The player shall not encounter twice
             p.setScore(SCORE_MODIFIER);
+            System.out.println("You have slain a Ranged Mutant");
+        }
+        else{
+            System.out.println("You see a dead Mutant.");
         }
         this.setNotActive();
+        this.setMapSymbol(" ");
+        p.setOverlapping(this.getMapSymbol());
     }
 
     public void activateRanged(Player p){
