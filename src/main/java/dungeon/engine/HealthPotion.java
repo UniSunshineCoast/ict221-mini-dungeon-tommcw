@@ -4,7 +4,7 @@ package dungeon.engine;
  * Activating this object should
  * Restore 4 HP (max HP = 10) on the player
  */
-public class HealthPotion extends MazeItem{
+public class HealthPotion extends MazeItem implements java.io.Serializable{
     private static final int HP_MODIFIER = 4;
 
     public HealthPotion(){ // No-arg constructor

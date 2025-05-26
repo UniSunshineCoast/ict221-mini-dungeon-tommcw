@@ -5,7 +5,7 @@ package dungeon.engine;
  * Gold.activate() method should execute regardless of whether
  * the player has entered that cell before.
  */
-public class Gold extends MazeItem{
+public class Gold extends MazeItem implements java.io.Serializable{
     private static final int GOLD_MODIFIER = 2;
 
     public Gold(){ // No-arg constructor

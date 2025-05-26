@@ -7,7 +7,7 @@ import java.util.Random;
  * with a 50% chance to give -2HP. No hp loss from
  * entering its cell to encounter. Adds +2 score for encountering.
  */
-public class RangedMutant extends MazeItem{
+public class RangedMutant extends MazeItem implements java.io.Serializable{
     private static final int HP_MODIFIER_RANGED = -2;
     private static final int SCORE_MODIFIER = 2;
 

@@ -1,6 +1,6 @@
 package dungeon.engine;
 
-public class Ladder extends MazeItem{
+public class Ladder extends MazeItem implements java.io.Serializable{
 
     public Ladder(){ // No-arg constructor
         this.setActive();

@@ -1,6 +1,6 @@
 package dungeon.engine;
 
-public class Player {
+public class Player implements java.io.Serializable{
     final static int MAX_PLAYER_HEALTH = 10;
     private int health = MAX_PLAYER_HEALTH;
     private int x; // Players current x co-ord

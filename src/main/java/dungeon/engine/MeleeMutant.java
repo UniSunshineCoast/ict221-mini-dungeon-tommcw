@@ -5,7 +5,7 @@ package dungeon.engine;
  * Add -2 HP and +2 to player score.
  * Also, the mutant is deactivated.
  */
-public class MeleeMutant extends MazeItem{
+public class MeleeMutant extends MazeItem implements java.io.Serializable{
     private static final int HP_MODIFIER = -2;
     private static final int SCORE_MODIFIER = 2;
 

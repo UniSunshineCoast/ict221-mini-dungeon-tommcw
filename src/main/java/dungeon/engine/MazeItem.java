@@ -1,6 +1,6 @@
 package dungeon.engine;
 
-public abstract class MazeItem {
+public abstract class MazeItem implements java.io.Serializable{
     private boolean active;
     private String  mapSymbol;
     private int hpModifier;

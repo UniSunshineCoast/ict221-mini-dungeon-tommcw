@@ -2,7 +2,7 @@ package dungeon.engine;
 
 import javafx.scene.layout.StackPane;
 
-public class Cell extends StackPane {
+public class Cell extends StackPane implements java.io.Serializable{
     public String contents = " ";
     public MazeItem mazeObject = null;
 

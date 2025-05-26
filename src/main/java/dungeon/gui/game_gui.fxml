@@ -1,18 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
+<BorderPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
 
     <center>
-        <GridPane fx:id="gridPane" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
-
-        </GridPane>
+        <GridPane fx:id="gridPane" prefHeight="601.0" prefWidth="532.0" BorderPane.alignment="CENTER">
+         <opaqueInsets>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin></GridPane>
     </center>
+   <left>
+      <VBox fx:id="leftSide" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Press Keys" />
+            <Label text="Click Buttons" />
+            <Label text="To Move" />
+            <TilePane prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Button fx:id="wkey" mnemonicParsing="false" text="W" />
+                        <Button fx:id="skey" mnemonicParsing="false" text="S" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="akey" mnemonicParsing="false" text="A" />
+                            <Button fx:id="dkey" mnemonicParsing="false" text="D" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </TilePane>
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <StackPane maxHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Mini Dungeon">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
+   </top>
 
 
 </BorderPane>

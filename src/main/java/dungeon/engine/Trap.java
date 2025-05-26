@@ -3,7 +3,7 @@ package dungeon.engine;
 /** A Trap should add -2 HP on activation,
  * and should remain active
  */
-public class Trap extends MazeItem{
+public class Trap extends MazeItem implements java.io.Serializable{
     private static final int HP_MODIFIER = -2;
 
     public Trap(){ // No-arg constructor

@@ -1,6 +1,6 @@
 package dungeon.engine;
 
-public class EmptyCell extends MazeItem{
+public class EmptyCell extends MazeItem implements java.io.Serializable{
 
     public EmptyCell(){ // No-arg constructor
         this.setActive();

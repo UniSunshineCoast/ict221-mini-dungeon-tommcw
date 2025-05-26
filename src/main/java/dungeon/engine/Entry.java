@@ -1,6 +1,6 @@
 package dungeon.engine;
 
-public class Entry extends MazeItem{
+public class Entry extends MazeItem implements java.io.Serializable{
 
     public Entry(){ // No-arg constructor
         this.setActive();
