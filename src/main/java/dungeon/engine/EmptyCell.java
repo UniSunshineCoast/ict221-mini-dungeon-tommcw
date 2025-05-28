@@ -9,7 +9,7 @@ public class EmptyCell extends MazeItem implements java.io.Serializable{
 
     @Override
     public void activate(Player p){
-        System.out.println("emptycelltext");
+        System.out.println("You wander around in the dark.");
         p.setOverlapping(" ");
     }
 }
