@@ -30,11 +30,11 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button fx:id="wkey" mnemonicParsing="false" onAction="#handleButtonClickW" text="W" />
-                        <Button fx:id="skey" mnemonicParsing="false" text="S" />
+                        <Button fx:id="skey" mnemonicParsing="false" onAction="#handleButtonClickS" text="S" />
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="akey" mnemonicParsing="false" text="A" />
-                            <Button fx:id="dkey" mnemonicParsing="false" text="D" />
+                              <Button fx:id="akey" mnemonicParsing="false" onAction="#handleButtonClickA" text="A" />
+                            <Button fx:id="dkey" mnemonicParsing="false" onAction="#handleButtonClickD" text="D" />
                            </children>
                         </HBox>
                      </children>

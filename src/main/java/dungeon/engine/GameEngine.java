@@ -149,6 +149,50 @@ public class GameEngine implements java.io.Serializable {
             this.getMap()[p.getX()][p.getY()].getMazeObject().activate(p);
         }
     }
+
+    /**
+     * This method handles user input
+     */
+    public void handleUserInput(String input, Player thePlayer, int mapSize){
+        switch (input){
+            case "w","W":
+                // Check the move is allowed
+                if (thePlayer.getY() < 1) {System.out.println("You hit a wall");}
+                else { // Set any overlapped item back
+                    this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                    // Move the player
+                    thePlayer.updateCoords('y', -1);
+                    this.processMovement(thePlayer);
+                }
+                break;
+            case "a","A":
+                if (thePlayer.getX() < 1) {System.out.println("You hit a wall");}
+                else {
+                    this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                    thePlayer.updateCoords('x', -1);
+                    this.processMovement(thePlayer);
+                }
+                break;
+            case "s","S":
+                if (thePlayer.getY() > mapSize - 2) {System.out.println("You hit a wall");}
+                else {
+                    this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                    thePlayer.updateCoords('y', 1);
+                    this.processMovement(thePlayer);
+                }
+                break;
+            case "d","D":
+                if (thePlayer.getX() > mapSize - 2) {System.out.println("You hit a wall");}
+                else {
+                    this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
+                    thePlayer.updateCoords('x', 1);
+                    this.processMovement(thePlayer);
+                }
+                break;
+            default:
+                System.out.println("Invalid move: try WASD");
+        }
+    }
     /**
      * Plays one text-based game only
      */
@@ -163,7 +207,7 @@ public class GameEngine implements java.io.Serializable {
         thePlayer.setY(mapSize - 1);
         this.populateMap(0, this.getSize() - 1, thePlayer);
         for (int steps = 100; steps > 0; steps--){
-            if (thePlayer.getHealth() == 0) break; // TODO: death
+            if (thePlayer.getHealth() == 0) break;
             if (thePlayer.getVictorious()) {
                 this.raiseLevel();
                 this.raiseDifficulty();// if Level 1 is completed.
@@ -183,46 +227,8 @@ public class GameEngine implements java.io.Serializable {
             System.out.printf(" Current Difficulty: %d%n", this.getDifficulty());
             this.printMap();
             System.out.println("Please enter the direction to go (WASD)");
+            this.handleUserInput(input.next(), thePlayer, mapSize);
 
-            //Handle user input
-            switch (input.next()){
-                case "w","W":
-                    // Check the move is allowed
-                    if (thePlayer.getY() < 1) {System.out.println("You hit a wall");}
-                    else { // Set any overlapped item back
-                        this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
-                        // Move the player
-                        thePlayer.updateCoords('y', -1);
-                        this.processMovement(thePlayer);
-                    }
-                    break;
-                case "a","A":
-                    if (thePlayer.getX() < 1) {System.out.println("You hit a wall");}
-                    else {
-                        this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
-                        thePlayer.updateCoords('x', -1);
-                        this.processMovement(thePlayer);
-                    }
-                    break;
-                case "s","S":
-                    if (thePlayer.getY() > mapSize - 2) {System.out.println("You hit a wall");}
-                    else {
-                        this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
-                        thePlayer.updateCoords('y', 1);
-                        this.processMovement(thePlayer);
-                    }
-                    break;
-                case "d","D":
-                    if (thePlayer.getX() > mapSize - 2) {System.out.println("You hit a wall");}
-                    else {
-                        this.getMap()[thePlayer.getX()][thePlayer.getY()].setContents(thePlayer.getOverlapping());
-                        thePlayer.updateCoords('x', 1);
-                        this.processMovement(thePlayer);
-                    }
-                    break;
-                default:
-                    System.out.println("Invalid move: try WASD");
-            }
         }
         System.out.println("Your journey is over.");
         System.out.printf("Your Score was: %d", thePlayer.getScore());
@@ -232,5 +238,5 @@ public class GameEngine implements java.io.Serializable {
     public static void main(String[] args) {
         final int mapSize = 10;
         GameEngine engine = new GameEngine(mapSize);
-        System.out.println(engine.playTextGame(mapSize));
+        engine.playTextGame(mapSize);
 }}

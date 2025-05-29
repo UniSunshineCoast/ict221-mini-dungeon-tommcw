@@ -3,7 +3,7 @@ import dungeon.engine.Player;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestTrap {
+public class TrapTest {
     @Test
     public void testActivate() {
         Player p = new Player();
